@@ -2,10 +2,7 @@ import SwiftUI
 
 struct SleepView: View {
     var body: some View {
-        VStack{
-            navigationTitle("SecondView")
-            offset()
-            }
+        Text("hello")
     }
 }
 struct SleepView_Preview: PreviewProvider {
