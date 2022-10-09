@@ -11,4 +11,3 @@ struct AdministratorView_Preview: PreviewProvider {
         AdiministratorView()
     }
 }
-
