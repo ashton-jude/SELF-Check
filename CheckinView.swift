@@ -2,40 +2,62 @@
 import SwiftUI
 
 struct CheckinView: View {
+    
+    @State var active: Bool = false
+    
     var body: some View {
-        NavigationView {
-            VStack {
-                Image(systemName: "arrowshape.turn.up.backward")
-                    .imageScale(.large)
-                    .foregroundColor(.white)
-                Text("Go back or turn on sleep mode?")
-                NavigationLink(destination: SleepView(),label: {
-                    Text("Back?")
-                        .bold()
-                        .frame(width: 120,height: 25)
-                        .background(Color.blue)
-                        .foregroundColor(Color.white)
-                        .cornerRadius(10)
-                    
-                })
-                Form {
-                    /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Content@*/Text("Content")/*@END_MENU_TOKEN@*/
-                    Text("No Activity")
-                }
-            }
-            Button(action: 
-                    {print("Button action")
-            }) {
-                HStack {
-                    Image(systemName: "moon.fill")
-                    Text("Sleep Mode")
+        NavigationView{
+            ZStack(alignment: .center) { 
+                VStack{
+                    Text("S.E.L.F Check In Screen")
+                        .font(.title)
+                        .fontWeight(.bold)
+                    Spacer()
+                    VStack(spacing: 8) {
+                        VStack(alignment: .leading, spacing: 5 ){ 
+                            Text("need code to take picture..")
+                                .font(.callout).bold()
+                            
+                        }
+                        VStack(alignment: .leading, spacing: 5) { 
+                            Image("EgPhoto")
+                                .resizable()
+                                .frame(width: 300, height: 300)
+                            
+                                
+                        }
+                        
+                        
                     }
+                    .frame(width: 250)
+                    Spacer()
+                    NavigationLink(  destination: CheckinView() , isActive: self.$active) { 
+                        Text("Take Photo")
+                            .frame(width: 250, height: 40)
+                            .background(Color.white)
+                            .cornerRadius(8)
+                            .foregroundColor(Color.black)
+                    }
+                    NavigationLink(  destination: LoginView() , isActive: self.$active) { 
+                        Text("Submit Photo")
+                            .frame(width: 250, height: 40)
+                            .background(Color.white)
+                            .cornerRadius(8)
+                            .foregroundColor(Color.black)
+                    }
+                }
+                .padding(.vertical)
+                
             }
+            .background(Image("Orange").ignoresSafeArea())
         }
+        .navigationViewStyle(.stack)
     }
 }
+
 struct CheckinView_Preview: PreviewProvider {
     static var previews: some View {
         CheckinView()
     }
 }
+

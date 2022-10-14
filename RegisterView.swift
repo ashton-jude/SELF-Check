@@ -8,7 +8,7 @@ struct RegisterStudent: View {
     @State var parentName: String = ""
     @State var parentEmail: String = ""
     @State var parentPhoneNumber: String = ""
-    @State var absenses: String = ""
+    @State var absenses: String = ""   
     @State var depression: String = ""
     @State var happiness: String = ""
     @State var sickDays: String = ""

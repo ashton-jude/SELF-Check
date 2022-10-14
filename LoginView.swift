@@ -28,7 +28,7 @@ struct LoginView: View {
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                     }
                     
-                    NavigationLink(  destination: CheckinView() , isActive: self.$active) { 
+                    NavigationLink(  destination: ForgotPasswordView() , isActive: self.$active) { 
                         Text("Forgot your password? Reset it now!")
                             .font(.subheadline)
                             .foregroundColor(Color.black)
@@ -36,7 +36,7 @@ struct LoginView: View {
                 }
                 .frame(width: 250)
                     Spacer()
-                    NavigationLink(  destination: CheckinView() , isActive: self.$active) { 
+                    NavigationLink(  destination: AdiministratorView() , isActive: self.$active) { 
                         Text("Admin Login")
                             .frame(width: 250, height: 40)
                             .background(Color.white)
