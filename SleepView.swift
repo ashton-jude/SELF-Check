@@ -1,14 +1,15 @@
 import SwiftUI
 
 struct SleepView: View {
+    @State var userImage: Image = Image("")
     var body: some View {
-        NavigationView {
+        
             VStack {
                 Image(systemName: "arrowshape.turn.up.backward")
                     .imageScale(.large)
                     .foregroundColor(.white)
                 Text("School Logo")
-                Image("Logo")
+                self.userImage
                     .resizable()
                     .frame(width: 200, height: 200)
                     
@@ -22,20 +23,11 @@ struct SleepView: View {
                         .cornerRadius(10)
                     
                 })
-                Form {
-                    
-                    Text("Sleep Mode")
-                }
+                
             }
-            Button(action: 
-                    {print("Button action")
-            }) {
-                HStack {
-                    Image(systemName: "moon.fill")
-                    Text("Sleep Mode")
-                }
-            }
-        }
+            
+            
+        
     }
 }
 

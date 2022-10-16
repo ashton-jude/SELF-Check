@@ -5,6 +5,7 @@ struct LoginView: View {
     @State var email: String = ""
     @State var password: String = ""
     @State var active: Bool = false
+    @State var showStudent: Bool = false
     
     var body: some View {
         NavigationView{
@@ -27,12 +28,6 @@ struct LoginView: View {
                         SecureField("password", text: $password)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                     }
-                    
-                    NavigationLink(  destination: ForgotPasswordView() , isActive: self.$active) { 
-                        Text("Forgot your password? Reset it now!")
-                            .font(.subheadline)
-                            .foregroundColor(Color.black)
-                    }
                 }
                 .frame(width: 250)
                     Spacer()
@@ -43,12 +38,17 @@ struct LoginView: View {
                             .cornerRadius(8)
                             .foregroundColor(Color.black)
                     }
-                    NavigationLink(  destination: CheckinView() , isActive: self.$active) { 
-                        Text("Student Login")
-                            .frame(width: 250, height: 40)
-                            .background(Color.white)
-                            .cornerRadius(8)
-                            .foregroundColor(Color.black)
+                    NavigationLink(  destination: CheckinView() , isActive: self.$showStudent) { 
+                        Button { 
+                            self.showStudent.toggle()
+                        } label: { 
+                            Text("Student Login")
+                                .frame(width: 250, height: 40)
+                                .background(Color.white)
+                                .cornerRadius(8)
+                                .foregroundColor(Color.black)
+                        }
+                        
                     }
             }
                 .padding(.vertical)
