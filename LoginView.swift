@@ -6,6 +6,7 @@ struct LoginView: View {
     @State var password = ""
     @State var showDialog = false
     @State var isStudent = true
+    @State private var checked = false
     @FetchRequest(sortDescriptors:[NSSortDescriptor(keyPath: \Users.id,ascending:true)], animation: .default)
     private var users: FetchedResults<Users>
     @Environment(\.managedObjectContext) private var viewContext
@@ -13,44 +14,36 @@ struct LoginView: View {
         NavigationView{
             ZStack  (alignment: .center){
                 HStack(alignment: .center, spacing: 20) { 
-                    VStack (alignment: .center, spacing: 10) { 
-                        Image("Logo")
+                    VStack (alignment: .center, spacing: 30) { 
+                        Image("Login_Image")
                             .resizable()
-                            .frame(width: 180, height: 180)
+                            .frame(width: 665, height: 930)
                             .cornerRadius(10)
                             .clipped()
-                    }
+                    }.padding()
                     .frame(width: UIScreen.main.bounds.width / 2)
                     Spacer()
                     VStack(alignment: .center, spacing: 20) { 
+                        VStack(alignment: .center, spacing: 150){
+                        Image("School_Logo")
+                            .resizable()
+                            .frame(width: 275, height: 275)
+                            .cornerRadius(10)
+                            .clipped()
+                        }
                         TextField("Email Address", text: $email)
                             .frame(width: 250, height: 40)
-                            .background(Color.white)
+                            .background(Color(red: 0.96, green: 0.96, blue: 0.96))
                             .cornerRadius(10)
                         SecureField("Password", text: $password)
                             .frame(width: 250, height: 40)
-                            .background(Color.white)
+                            .background(Color(red: 0.96, green: 0.96, blue: 0.96))
                             .cornerRadius(10)
-                        Button { 
-                            self.showDialog.toggle()
-                        } label: { 
-                            ZStack(alignment: .center) { 
-                                HStack(alignment: .center) { 
-                                    Text(self.isStudent ? "Student" : "Admin")
-                                        .foregroundColor(.black)
-                                        .font(.headline)
-                                    Spacer()
-                                    Image(systemName: "chevron.right")
-                                        .font(.headline)
-                                        .foregroundColor(.black)
-                                }
-                                .padding(.horizontal)
-                                .padding(.vertical,8)
-                            }
-                            .background(Color.white)
-                            .cornerRadius(10)
-                            .frame(width: 250)
-                        }
+                        
+                        Toggle(isOn: $checked, label: {
+                            Text("Administrator View")
+                        }).frame(width: 250, height: 40, alignment:.trailing)
+                        
                         Button { 
                             let user = users.filter({$0.email ?? "" == self.email })
                             if user.count > 0{
@@ -66,19 +59,21 @@ struct LoginView: View {
                                 }
                             }
                             print(users.count)
-                        } label: { 
+                        } label: {
                             Text("Login")
                                 .padding()
                                 .frame(width: 250, height: 40)
-                                .background(Color.white)
-                                .foregroundColor(.black)
+                                .background(Color(red: 0, green: 0.21, blue: 0.38))
+                                .foregroundColor(.white)
                                 .cornerRadius(10)
                         }
+                        Spacer()
                     }
+                    
                     .frame(width: UIScreen.main.bounds.width / 2)
                 }
             }
-            .background(Image("Orange").ignoresSafeArea())
+            .background(Color(red: 0.96, green: 0.96, blue: 0.96))
             .actionSheet(isPresented: $showDialog){
                 ActionSheet(title: Text("Select Type"), buttons: [
                     .default(Text("Student"), action: { 
@@ -92,10 +87,9 @@ struct LoginView: View {
         }.navigationViewStyle(.stack)
     }
 }
-/*
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
         LoginView()
     }
 }
- */
+ 
