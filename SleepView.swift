@@ -5,19 +5,16 @@ struct SleepView: View {
     var body: some View {
         
             VStack {
-                Image(systemName: "arrowshape.turn.up.backward")
-                    .imageScale(.large)
-                    .foregroundColor(.white)
-                Text("School Logo")
+                
                 self.userImage
                     .resizable()
                     .frame(width: 200, height: 200)
                     
                     
                 NavigationLink(destination: SleepView(),label: {
-                    Text("Back?")
+                    Text("Check-in")
                         .bold()
-                        .frame(width: 120,height: 25)
+                        .frame(width: 400,height: 40)
                         .background(Color.blue)
                         .foregroundColor(Color.white)
                         .cornerRadius(10)
