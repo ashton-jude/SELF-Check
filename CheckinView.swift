@@ -11,18 +11,6 @@ struct CheckinView: View {
         
             ZStack(alignment: .center) { 
                 VStack{
-                    Text("S.E.L.F Check In Screen")
-                        .font(.title)
-                        .fontWeight(.bold)
-                    Spacer()
-                    VStack(spacing: 8) {
-                        VStack(alignment: .leading, spacing: 5) { 
-                            
-                        }
-                        
-                    }
-                    .frame(width: 250)
-                    Spacer()
                     self.image
                         .resizable()
                         .frame(width: 250,height: 250)
@@ -38,7 +26,7 @@ struct CheckinView: View {
                             .foregroundColor(Color.black)
                     }
                     
-                    NavigationLink(  destination: SleepView(userImage: self.image) , isActive: self.$sleepScreen) { 
+                    NavigationLink(  destination: StudentFoundView(userImage: self.image) , isActive: self.$sleepScreen) { 
                         Text("Submit Photo")
                             .frame(width: 250, height: 40)
                             .background(Color.white)

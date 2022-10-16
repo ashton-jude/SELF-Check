@@ -1,63 +1,101 @@
 import SwiftUI
+import CoreData
 
 struct LoginView: View {
-    
-    @State var email: String = ""
-    @State var password: String = ""
-    @State var active: Bool = false
-    @State var showStudent: Bool = false
-    
+    @State var email = ""
+    @State var password = ""
+    @State var showDialog = false
+    @State var isStudent = true
+    @FetchRequest(sortDescriptors:[NSSortDescriptor(keyPath: \Users.id,ascending:true)], animation: .default)
+    private var users: FetchedResults<Users>
+    @Environment(\.managedObjectContext) private var viewContext
     var body: some View {
         NavigationView{
-            ZStack(alignment: .center) { 
-                VStack{
-                    Text("Welcome to S.E.L.F Check")
-                        .font(.title)
-                        .fontWeight(.bold)
-                    Spacer()
-                VStack(spacing: 16) {
-                    VStack(alignment: .leading, spacing: 5 ){ 
-                        Text("Email")
-                            .font(.callout).bold()
-                        TextField("example@example.com", text: $email)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
+            ZStack  (alignment: .center){
+                HStack(alignment: .center, spacing: 20) { 
+                    VStack (alignment: .center, spacing: 10) { 
+                        Image("Logo")
+                            .resizable()
+                            .frame(width: 180, height: 180)
+                            .cornerRadius(10)
+                            .clipped()
                     }
-                    VStack(alignment: .leading, spacing: 5) { 
-                        Text("Password")
-                            .font(.callout).bold()
-                        SecureField("password", text: $password)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                    }
-                }
-                .frame(width: 250)
+                    .frame(width: UIScreen.main.bounds.width / 2)
                     Spacer()
-                    NavigationLink(  destination: AdiministratorView() , isActive: self.$active) { 
-                        Text("Admin Login")
+                    VStack(alignment: .center, spacing: 20) { 
+                        TextField("Email Address", text: $email)
                             .frame(width: 250, height: 40)
                             .background(Color.white)
-                            .cornerRadius(8)
-                            .foregroundColor(Color.black)
-                    }
-                    NavigationLink(  destination: CheckinView() , isActive: self.$showStudent) { 
+                            .cornerRadius(10)
+                        SecureField("Password", text: $password)
+                            .frame(width: 250, height: 40)
+                            .background(Color.white)
+                            .cornerRadius(10)
                         Button { 
-                            self.showStudent.toggle()
+                            self.showDialog.toggle()
                         } label: { 
-                            Text("Student Login")
+                            ZStack(alignment: .center) { 
+                                HStack(alignment: .center) { 
+                                    Text(self.isStudent ? "Student" : "Admin")
+                                        .foregroundColor(.black)
+                                        .font(.headline)
+                                    Spacer()
+                                    Image(systemName: "chevron.right")
+                                        .font(.headline)
+                                        .foregroundColor(.black)
+                                }
+                                .padding(.horizontal)
+                                .padding(.vertical,8)
+                            }
+                            .background(Color.white)
+                            .cornerRadius(10)
+                            .frame(width: 250)
+                        }
+                        Button { 
+                            let user = users.filter({$0.email ?? "" == self.email })
+                            if user.count > 0{
+                                print("user is regitered")
+                            } else{
+                                let user = Users(context: self.viewContext)
+                                user.id = UUID().uuidString
+                                user.email = self.email
+                                user.password = self.password
+                                self.viewContext.perform {
+                                    try? self.viewContext.save()
+                                    
+                                }
+                            }
+                            print(users.count)
+                        } label: { 
+                            Text("Login")
+                                .padding()
                                 .frame(width: 250, height: 40)
                                 .background(Color.white)
-                                .cornerRadius(8)
-                                .foregroundColor(Color.black)
+                                .foregroundColor(.black)
+                                .cornerRadius(10)
                         }
-                        
                     }
-            }
-                .padding(.vertical)
-                
+                    .frame(width: UIScreen.main.bounds.width / 2)
+                }
             }
             .background(Image("Orange").ignoresSafeArea())
-        }
-        .navigationViewStyle(.stack)
+            .actionSheet(isPresented: $showDialog){
+                ActionSheet(title: Text("Select Type"), buttons: [
+                    .default(Text("Student"), action: { 
+                        self.isStudent = true
+                    }),
+                    .default(Text("Admin"), action: { 
+                        self.isStudent = false
+                    })
+                ])
+            }
+        }.navigationViewStyle(.stack)
     }
 }
-
-
+/*
+struct LoginView_Previews: PreviewProvider {
+    static var previews: some View {
+        LoginView()
+    }
+}
+ */

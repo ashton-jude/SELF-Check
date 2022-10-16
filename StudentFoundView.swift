@@ -1,25 +1,24 @@
 import SwiftUI
 
-struct SleepView: View {
+struct StudentFoundView: View {
     @State var userImage: Image = Image("")
     var body: some View {
-        
-            VStack {
+        HStack {
+            self.userImage
+                .resizable()
+                .frame(width: 400, height: 600)
+            VStack(alignment: .leading, spacing: 10) {
                 
-                self.userImage
-                    .resizable()
-                    .frame(width: 200, height: 200)
-                    
-                    
-                NavigationLink(destination: SleepView(),label: {
+                NavigationLink(destination: CheckinView(),label: {
                     Text("Check-in")
                         .bold()
-                        .frame(width: 400,height: 40)
+                        .frame(width: 250,height: 40)
                         .background(Color.blue)
                         .foregroundColor(Color.white)
                         .cornerRadius(10)
                     
                 })
+        }
                 
             }
             
@@ -28,8 +27,8 @@ struct SleepView: View {
     }
 }
 
-struct SleepView_Preview: PreviewProvider {
+struct StudentFoundView_Preview: PreviewProvider {
     static var previews: some View {
-        SleepView()
+        StudentFoundView()
     }
 }

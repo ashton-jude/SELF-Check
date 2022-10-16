@@ -1,5 +1,6 @@
-/*import SwiftUI
-//import RegisterStudent
+/*
+import SwiftUI
+import RegisterStudent
 
 struct StudentDetailView: View {
     var body: some View {
@@ -57,4 +58,4 @@ struct StudentDetail_Preview: PreviewProvider {
         RegisterStudent()
     }
 }
-*/
+ */
