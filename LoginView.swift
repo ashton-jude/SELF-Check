@@ -33,11 +33,11 @@ struct LoginView: View {
                         }
                         TextField("Email Address", text: $email)
                             .frame(width: 250, height: 40)
-                            .background(Color(red: 0.96, green: 0.96, blue: 0.96))
+                            .background(Color(red: 0.0, green: 0.0, blue: 0.25))
                             .cornerRadius(10)
                         SecureField("Password", text: $password)
                             .frame(width: 250, height: 40)
-                            .background(Color(red: 0.96, green: 0.96, blue: 0.96))
+                            .background(Color(red: 0.0, green: 0.0, blue: 0.25))
                             .cornerRadius(10)
                         
                         Toggle(isOn: $checked, label: {
@@ -47,7 +47,7 @@ struct LoginView: View {
                         Button { 
                             let user = users.filter({$0.email ?? "" == self.email })
                             if user.count > 0{
-                                print("user is regitered")
+                                print("user is registered")
                             } else{
                                 let user = Users(context: self.viewContext)
                                 user.id = UUID().uuidString
@@ -64,7 +64,7 @@ struct LoginView: View {
                                 .padding()
                                 .frame(width: 250, height: 40)
                                 .background(Color(red: 0, green: 0.21, blue: 0.38))
-                                .foregroundColor(.white)
+                                .foregroundColor(.blue)
                                 .cornerRadius(10)
                         }
                         Spacer()
@@ -73,7 +73,7 @@ struct LoginView: View {
                     .frame(width: UIScreen.main.bounds.width / 2)
                 }
             }
-            .background(Color(red: 0.96, green: 0.96, blue: 0.96))
+            .background(Color(red: 0.1, green: 0.1, blue: 0.30))
             .actionSheet(isPresented: $showDialog){
                 ActionSheet(title: Text("Select Type"), buttons: [
                     .default(Text("Student"), action: { 
