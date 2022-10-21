@@ -2,7 +2,7 @@ import SwiftUI
 
 struct AdiministratorView: View {
     var body: some View {
-        Text("administrator view screen")
+        Text("admin screen")
     }
 }
 

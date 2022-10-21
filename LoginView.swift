@@ -1,15 +1,14 @@
 import SwiftUI
 import CoreData
+import SQLite3
 
 struct LoginView: View {
+    
     @State var email = ""
     @State var password = ""
     @State var showDialog = false
     @State var isStudent = true
     @State private var checked = false
-    @FetchRequest(sortDescriptors:[NSSortDescriptor(keyPath: \Users.id,ascending:true)], animation: .default)
-    private var users: FetchedResults<Users>
-    @Environment(\.managedObjectContext) private var viewContext
     var body: some View {
         NavigationView{
             ZStack  (alignment: .center){
@@ -44,21 +43,12 @@ struct LoginView: View {
                             Text("Administrator View")
                         }).frame(width: 250, height: 40, alignment:.trailing)
                         
-                        Button { 
-                            let user = users.filter({$0.email ?? "" == self.email })
-                            if user.count > 0{
-                                print("user is regitered")
-                            } else{
-                                let user = Users(context: self.viewContext)
-                                user.id = UUID().uuidString
-                                user.email = self.email
-                                user.password = self.password
-                                self.viewContext.perform {
-                                    try? self.viewContext.save()
-                                    
-                                }
+                        Button {
+                            if self.checked{
+                                
+                            }else {
+                                
                             }
-                            print(users.count)
                         } label: {
                             Text("Login")
                                 .padding()
@@ -73,6 +63,13 @@ struct LoginView: View {
                     .frame(width: UIScreen.main.bounds.width / 2)
                 }
             }
+            .onAppear(perform: { 
+                //SQLManager.shared.createUser(table: User.self)
+                //let user = User(id: 1, email: "ashton.reddy@outlook.com", password: "123123")
+                //SQLManager.shared.insertData(user: user)
+                SQLManager.shared.getUserData(id: 1)
+                
+            })
             .background(Color(red: 0.96, green: 0.96, blue: 0.96))
             .actionSheet(isPresented: $showDialog){
                 ActionSheet(title: Text("Select Type"), buttons: [
@@ -92,4 +89,5 @@ struct LoginView_Previews: PreviewProvider {
         LoginView()
     }
 }
+
  
