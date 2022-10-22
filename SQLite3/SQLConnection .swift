@@ -142,6 +142,31 @@ extension SQLiteDatabase {
         }
         print("Successfully inserted row.")
     }
+    
+    func insertStudent(student: Student) throws {
+        let insertSql = "INSERT INTO Student (Id, FirstName, LastName, Grade, Photo, IsRegister) VALUES (?, ?, ?, ?, ?, ?);"
+        let insertStatement = try prepareStatement(sql: insertSql)
+        defer {
+            sqlite3_finalize(insertStatement)
+        }
+        let firstName: NSString = student.firstName
+        let lastName: NSString = student.lastName
+        let grade: NSString = student.grade
+        let photo: NSString = student.photo
+        let isRegister: NSString = student.isRegister
+        guard
+            sqlite3_bind_int(insertStatement, 1, student.id) == SQLITE_OK  &&
+                sqlite3_bind_text(insertStatement, 2, firstName.utf8String, -1, nil) == SQLITE_OK &&
+                sqlite3_bind_text(insertStatement, 3, lastName.utf8String, -1, nil) == SQLITE_OK  &&
+                sqlite3_bind_text(insertStatement, 4, grade.utf8String, -1, nil) == SQLITE_OK  &&
+                sqlite3_bind_text(insertStatement, 5, photo.utf8String, -1, nil) == SQLITE_OK  && sqlite3_bind_text(insertStatement, 6, isRegister.utf8String, -1, nil) == SQLITE_OK else {
+                    throw SQLiteError.Bind(message: errorMessage)
+                }
+        guard sqlite3_step(insertStatement) == SQLITE_DONE else {
+            throw SQLiteError.Step(message: errorMessage)
+        }
+        print("Successfully inserted row.")
+    }
 }
 
 //Read
@@ -173,6 +198,35 @@ extension SQLiteDatabase {
         let password = String(cString: queryResultCol2!) as NSString
         return User(id: id, email: name, password: password)
     }
+    func getStudentData(firstName: NSString) -> Student? {
+        let querySql = "SELECT * FROM Student WHERE FirstName = ?;"
+        guard let queryStatement = try? prepareStatement(sql: querySql) else {
+            return nil
+        }
+        defer {
+            sqlite3_finalize(queryStatement)
+        }
+        guard sqlite3_bind_text(queryStatement, 1, firstName.utf8String, -1, nil) == SQLITE_OK else {
+            return nil
+        }
+        
+        
+        guard sqlite3_step(queryStatement) == SQLITE_ROW else {
+            return nil
+        }
+        let id = sqlite3_column_int(queryStatement, 0)
+        let queryResultCol1 = sqlite3_column_text(queryStatement, 1)
+        let firstName = String(cString: queryResultCol1!) as NSString
+        let queryResultCol2 = sqlite3_column_text(queryStatement, 2)
+        let lastName = String(cString: queryResultCol2!) as NSString
+        let queryResultCol3 = sqlite3_column_text(queryStatement, 3)
+        let grade = String(cString: queryResultCol3!) as NSString
+        let queryResultCol4 = sqlite3_column_text(queryStatement, 4)
+        let photo = String(cString: queryResultCol4!) as NSString
+        let queryResultCol5 = sqlite3_column_text(queryStatement, 5)
+        let isRegister = String(cString: queryResultCol5!) as NSString
+        return Student(id: id, firstName: firstName, lastName: lastName, grade: grade, photo: photo, isRegister: isRegister)
+    }
 }
 //Create User Table
 struct StudentCheckIn {
@@ -198,9 +252,11 @@ extension StudentCheckIn: SQLTable {
 //Create Student Table
 struct Student {
     let id: Int32
-    let name: NSString
+    let firstName: NSString
+    let lastName: NSString
     let grade: NSString
     let photo: NSString
+    let isRegister: NSString
 }
 
 
@@ -209,9 +265,11 @@ extension Student: SQLTable {
         return """
     CREATE TABLE Student(
       Id INT PRIMARY KEY NOT NULL,
-      Name CHAR(255),
+      FirstName CHAR(255),
+      LastName CHAR(255),
       Grade CHAR(255),
-      Photo TEXT
+      Photo TEXT,
+      IsRegister TEXT 
     );
     """
     }

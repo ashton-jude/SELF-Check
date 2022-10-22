@@ -26,7 +26,7 @@ class SQLManager {
     
     func createStudentTable(table: SQLTable.Type){
         do{
-            try db.createTable(table: Student.self)
+            try db.createTable(table: table)
         } catch{
             print(db.errorMessage)
         }
@@ -40,17 +40,26 @@ class SQLManager {
         }
     }
     
+    func insertData(user: User){
+        do {
+            try db.insertContact(user: user)
+        } catch {
+            print(db.errorMessage)
+        }
+    }
         
-        
-        func insertData(user: User){
+        func insertStudentData(student: Student){
             do {
-                try db.insertContact(user: user)
+                try db.insertStudent(student: student)
             } catch {
                 print(db.errorMessage)
             }
         }
-        func getUserData(email: String, completionHandler: @escaping (User?) -> Void){
-            completionHandler(db.contact(email: email as NSString))
+    func getUserData(email: String, completionHandler: @escaping (User?) -> Void){
+        completionHandler(db.contact(email: email as NSString))
+    }
+        func getStudentData(firstName: String, completionHandler: @escaping (Student?) -> Void){
+            completionHandler(db.getStudentData(firstName: firstName as NSString))
         }
         
         

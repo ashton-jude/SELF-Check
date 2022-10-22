@@ -32,7 +32,17 @@ struct RequestAccessView: View {
                         .padding()
                     
                     Button { 
-                        
+                        SQLManager.shared.createStudentTable(table: Student.self)
+                        let id = Int.random(in: 10000...99999)
+                        let image = self.userImage.base64EncodedString()
+                        let student = Student(id: Int32(id), firstName: self.studentFirstName as NSString, lastName: self.studentLastName as NSString, grade: self.studentGrade as NSString, photo: image as NSString, isRegister: "false")
+                        SQLManager.shared.insertStudentData(student: student)
+                        SQLManager.shared.getStudentData(firstName: self.studentFirstName) { student in
+                            if let student = student{
+                                print(student.firstName)
+                                print(student.lastName)
+                            }
+                        }
                     } label: { 
                         Text("Request Access")
                             .fontWeight(.bold)
