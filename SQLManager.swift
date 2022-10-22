@@ -24,18 +24,37 @@ class SQLManager {
         }
     }
     
-    
-    func insertData(user: User){
+    func createStudentTable(table: SQLTable.Type){
+        do{
+            try db.createTable(table: Student.self)
+        } catch{
+            print(db.errorMessage)
+        }
+        
+    }
+    func createStudentCheckInTable(table: SQLTable.Type){
         do {
-            try db.insertContact(user: user)
+            try db.createTable(table: table)
         } catch {
             print(db.errorMessage)
         }
     }
     
-    func getUserData(id: Int32){
-        let user = db.contact(id: id)
-        print("\(user?.id ?? 0) \(user?.email ?? "") \(user?.password ?? "")")
-    }
+        
+        
+        func insertData(user: User){
+            do {
+                try db.insertContact(user: user)
+            } catch {
+                print(db.errorMessage)
+            }
+        }
+        func getUserData(email: String, completionHandler: @escaping (User?) -> Void){
+            completionHandler(db.contact(email: email as NSString))
+        }
+        
+        
+        
+        
     
 }

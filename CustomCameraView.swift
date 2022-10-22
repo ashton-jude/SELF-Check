@@ -3,7 +3,7 @@ import UIKit
 
 
 struct CustomCameraView: UIViewControllerRepresentable {
-    @Binding var image: Image
+    @Binding var image: Data
     @Binding var showCameraView: Bool
     func makeCoordinator() -> CustomCameraView.Coordinator {
         Coordinator(cameraView: self)
@@ -27,8 +27,8 @@ struct CustomCameraView: UIViewControllerRepresentable {
             
         }
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-            let image = info[.originalImage] ?? UIImage()
-            self.parent.image = Image(uiImage: image as! UIImage)
+            let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
+            self.parent.image = image.pngData() ?? Data(count: 0)
             self.parent.showCameraView = false
         }
         func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

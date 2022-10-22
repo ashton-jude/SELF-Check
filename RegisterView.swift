@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct RegisterStudent: View {
-    
+    @State var userImage: Data = Data(count: 0)
     @State var studentFirstName: String = ""
     @State var studentLastName: String = ""
     @State var studentGrade: String = ""
@@ -21,12 +21,9 @@ struct RegisterStudent: View {
                 .font(.system(size: 40))
             
             HStack (alignment: .center, spacing: 30){
-                Button {
-                    print("add photo button was tapped")
-                } label: {
-                    Image(systemName:"photo.fill.on.rectangle.fill")
-                        .font(.system(size: 350))
-                }
+                Image(uiImage: UIImage(data: self.userImage) ?? UIImage())
+                    .resizable()
+                    .frame(width: 250, height: 350)
                 VStack {
                     HStack{
                         

@@ -1,10 +1,10 @@
 import SwiftUI
 
 struct StudentFoundView: View {
-    @State var userImage: Image = Image("")
+    @State var userImage: Data = Data(count: 0)
     var body: some View {
         HStack {
-            self.userImage
+            Image(uiImage: UIImage(data: self.userImage) ?? UIImage())
                 .resizable()
                 .frame(width: 400, height: 600)
             VStack(alignment: .leading, spacing: 10) {

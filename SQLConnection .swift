@@ -146,22 +146,22 @@ extension SQLiteDatabase {
 
 //Read
 extension SQLiteDatabase {
-    func contact(id: Int32) -> User? {
-        let querySql = "SELECT * FROM User WHERE Id = ?;"
+    func contact(email: NSString) -> User? {
+        let querySql = "SELECT * FROM User WHERE Email = ?;"
         guard let queryStatement = try? prepareStatement(sql: querySql) else {
             return nil
         }
         defer {
             sqlite3_finalize(queryStatement)
         }
-        /* guard sqlite3_bind_text(queryStatement, 1, name.utf8String, -1, nil) == SQLITE_OK else {
+        guard sqlite3_bind_text(queryStatement, 1, email.utf8String, -1, nil) == SQLITE_OK else {
          return nil
-         }*/
+         }
         
         
-        guard sqlite3_bind_int(queryStatement, 1, id) == SQLITE_OK else {
+        /*guard sqlite3_bind_int(queryStatement, 1, id) == SQLITE_OK else {
             return nil
-        }
+        }*/
         
         guard sqlite3_step(queryStatement) == SQLITE_ROW else {
             return nil
@@ -172,5 +172,47 @@ extension SQLiteDatabase {
         let queryResultCol2 = sqlite3_column_text(queryStatement, 2)
         let password = String(cString: queryResultCol2!) as NSString
         return User(id: id, email: name, password: password)
+    }
+}
+//Create User Table
+struct StudentCheckIn {
+    let id: Int32
+    let studentId: NSString
+    let checkInTime: NSString
+    let emotion: NSString
+}
+
+
+extension StudentCheckIn: SQLTable {
+    static var createStatement: String {
+        return """
+    CREATE TABLE Student(
+      Id INT PRIMARY KEY NOT NULL,
+      StudentId INT,
+      CheckInTime TEXT,
+      Emotion TEXT
+    );
+    """
+    }
+}
+//Create Student Table
+struct Student {
+    let id: Int32
+    let name: NSString
+    let grade: NSString
+    let photo: NSString
+}
+
+
+extension Student: SQLTable {
+    static var createStatement: String {
+        return """
+    CREATE TABLE Student(
+      Id INT PRIMARY KEY NOT NULL,
+      Name CHAR(255),
+      Grade CHAR(255),
+      Photo TEXT
+    );
+    """
     }
 }

@@ -2,16 +2,23 @@
 import SwiftUI
 
 struct CheckinView: View {
-    @State var image: Image = Image("")
+    @State var image = Data(count: 0)
     @State var showCameraView: Bool = false
     @State var sleepScreen: Bool = false
     @State var takePhoto: Bool = false
-    
+    @State var showRegister = false
+    @State var showStudentFoundView = false
     var body: some View {
         
             ZStack(alignment: .center) { 
+                NavigationLink(destination: RegisterStudent(userImage: self.image) , isActive: self.$showRegister) {
+                    EmptyView()
+                }
+                NavigationLink(destination: StudentFoundView(userImage: self.image) , isActive: self.$showStudentFoundView) {
+                    EmptyView()
+                }
                 VStack{
-                    self.image
+                    Image(uiImage: UIImage(data: self.image) ?? UIImage())
                         .resizable()
                         .frame(width: 250,height: 250)
                         .cornerRadius(10)
@@ -25,14 +32,19 @@ struct CheckinView: View {
                             .cornerRadius(8)
                             .foregroundColor(Color.black)
                     }
-                    
-                    NavigationLink(  destination: StudentFoundView(userImage: self.image) , isActive: self.$sleepScreen) { 
+                    Button { 
+                        self.showRegister = true
+                    } label: { 
                         Text("Submit Photo")
                             .frame(width: 250, height: 40)
                             .background(Color.white)
                             .cornerRadius(8)
                             .foregroundColor(Color.black)
                     }
+                    
+                    
+                        
+                    
                 }
                 .padding(.vertical)
                 

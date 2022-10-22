@@ -1,9 +1,8 @@
 import SwiftUI
 import CoreData
-import SQLite3
 
 struct LoginView: View {
-    
+    @State var showCheckInView = false
     @State var email = ""
     @State var password = ""
     @State var showDialog = false
@@ -12,6 +11,9 @@ struct LoginView: View {
     var body: some View {
         NavigationView{
             ZStack  (alignment: .center){
+                NavigationLink(destination: CheckinView(), isActive: self.$showCheckInView) {
+                    EmptyView()
+                }
                 HStack(alignment: .center, spacing: 20) { 
                     VStack (alignment: .center, spacing: 30) { 
                         Image("Login_Image")
@@ -44,11 +46,18 @@ struct LoginView: View {
                         }).frame(width: 250, height: 40, alignment:.trailing)
                         
                         Button {
-                            if self.checked{
-                                
-                            }else {
-                                
+                            SQLManager.shared.getUserData(email: self.email) { user in
+                                if let user = user {
+                                    if self.checked{
+                                        
+                                    }else {
+                                        self.showCheckInView = true
+                                    }
+                                } else {
+                                    //email is not stored in database
+                                }
                             }
+                            
                         } label: {
                             Text("Login")
                                 .padding()
@@ -63,13 +72,6 @@ struct LoginView: View {
                     .frame(width: UIScreen.main.bounds.width / 2)
                 }
             }
-            .onAppear(perform: { 
-                //SQLManager.shared.createUser(table: User.self)
-                //let user = User(id: 1, email: "ashton.reddy@outlook.com", password: "123123")
-                //SQLManager.shared.insertData(user: user)
-                SQLManager.shared.getUserData(id: 1)
-                
-            })
             .background(Color(red: 0.96, green: 0.96, blue: 0.96))
             .actionSheet(isPresented: $showDialog){
                 ActionSheet(title: Text("Select Type"), buttons: [
