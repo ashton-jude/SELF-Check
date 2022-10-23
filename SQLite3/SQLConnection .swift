@@ -167,6 +167,27 @@ extension SQLiteDatabase {
         }
         print("Successfully inserted row.")
     }
+    func insertStudentDetail(student: StudentCheckIn) throws {
+        let insertSql = "INSERT INTO StudentCheckIn (Id, StudentId, CheckInTime, Emotion) VALUES (?, ?, ?, ?);"
+        let insertStatement = try prepareStatement(sql: insertSql)
+        defer {
+            sqlite3_finalize(insertStatement)
+        }
+        
+        let checkInTime: NSString = student.checkInTime
+        let emotion: NSString = student.emotion
+        guard
+            sqlite3_bind_int(insertStatement, 1, student.id) == SQLITE_OK  &&
+                sqlite3_bind_int(insertStatement, 2, student.studentId) == SQLITE_OK  &&
+                sqlite3_bind_text(insertStatement, 3, checkInTime.utf8String, -1, nil) == SQLITE_OK  &&
+                sqlite3_bind_text(insertStatement, 4, emotion.utf8String, -1, nil) == SQLITE_OK  else {
+            throw SQLiteError.Bind(message: errorMessage)
+        }
+        guard sqlite3_step(insertStatement) == SQLITE_DONE else {
+            throw SQLiteError.Step(message: errorMessage)
+        }
+        print("Successfully inserted row.")
+    }
 }
 
 //Read
@@ -227,11 +248,62 @@ extension SQLiteDatabase {
         let isRegister = String(cString: queryResultCol5!) as NSString
         return Student(id: id, firstName: firstName, lastName: lastName, grade: grade, photo: photo, isRegister: isRegister)
     }
+    func getStudentList() -> [Student]? {
+        let querySql = "SELECT * FROM Student;"
+        guard let queryStatement = try? prepareStatement(sql: querySql) else {
+            return nil
+        }
+        defer {
+            sqlite3_finalize(queryStatement)
+        }
+        var students = [Student]()
+        while(sqlite3_step(queryStatement) == SQLITE_ROW){
+            let id = sqlite3_column_int(queryStatement, 0)
+            let queryResultCol1 = sqlite3_column_text(queryStatement, 1)
+            let firstName = String(cString: queryResultCol1!) as NSString
+            let queryResultCol2 = sqlite3_column_text(queryStatement, 2)
+            let lastName = String(cString: queryResultCol2!) as NSString
+            let queryResultCol3 = sqlite3_column_text(queryStatement, 3)
+            let grade = String(cString: queryResultCol3!) as NSString
+            let queryResultCol4 = sqlite3_column_text(queryStatement, 4)
+            let photo = String(cString: queryResultCol4!) as NSString
+            let queryResultCol5 = sqlite3_column_text(queryStatement, 5)
+            let isRegister = String(cString: queryResultCol5!) as NSString
+            students.append(Student(id: id, firstName: firstName, lastName: lastName, grade: grade, photo: photo, isRegister: isRegister))
+        }
+        return students
+    }
+    func getStudentCheckInData(studentId: Int32) -> StudentCheckIn? {
+        let querySql = "SELECT * FROM StudentCheckIn WHERE StudentId = ?;"
+        guard let queryStatement = try? prepareStatement(sql: querySql) else {
+            return nil
+        }
+        
+        defer {
+            sqlite3_finalize(queryStatement)
+        }
+        
+        guard sqlite3_bind_int(queryStatement, 1, studentId) == SQLITE_OK else {
+            return nil
+        }
+        
+        guard sqlite3_step(queryStatement) == SQLITE_ROW else {
+            return nil
+        }
+        let id = sqlite3_column_int(queryStatement, 0)
+        let studentId = sqlite3_column_int(queryStatement, 1)
+        let queryResultCol1 = sqlite3_column_text(queryStatement, 2)
+        let checkInTime = String(cString: queryResultCol1!) as NSString
+        let queryResultCol2 = sqlite3_column_text(queryStatement, 3)
+        let emotion = String(cString: queryResultCol2!) as NSString
+        
+        return StudentCheckIn(id: id, studentId: studentId, checkInTime: checkInTime, emotion: emotion)
+    }
 }
 //Create User Table
 struct StudentCheckIn {
     let id: Int32
-    let studentId: NSString
+    let studentId: Int32
     let checkInTime: NSString
     let emotion: NSString
 }
@@ -240,7 +312,7 @@ struct StudentCheckIn {
 extension StudentCheckIn: SQLTable {
     static var createStatement: String {
         return """
-    CREATE TABLE Student(
+    CREATE TABLE StudentCheckIn(
       Id INT PRIMARY KEY NOT NULL,
       StudentId INT,
       CheckInTime TEXT,

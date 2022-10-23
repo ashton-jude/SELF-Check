@@ -3,6 +3,7 @@ import CoreData
 
 struct LoginView: View {
     @State var showCheckInView = false
+    @State var showAdministratorView = false
     @State var email = ""
     @State var password = ""
     @State var showDialog = false
@@ -12,6 +13,9 @@ struct LoginView: View {
         NavigationView{
             ZStack  (alignment: .center){
                 NavigationLink(destination: CheckinView(), isActive: self.$showCheckInView) {
+                    EmptyView()
+                }
+                NavigationLink(destination: AdiministratorView(), isActive: self.$showAdministratorView) {
                     EmptyView()
                 }
                 HStack(alignment: .center, spacing: 20) { 
@@ -49,7 +53,7 @@ struct LoginView: View {
                             SQLManager.shared.getUserData(email: self.email) { user in
                                 if let user = user {
                                     if self.checked{
-                                        
+                                        self.showAdministratorView = true
                                     }else {
                                         self.showCheckInView = true
                                     }

@@ -8,13 +8,15 @@ struct CheckinView: View {
     @State var takePhoto: Bool = false
     @State var showRequestAccessView = false
     @State var showStudentFoundView = false
+    @State var correctionList = [true,false]
+    @State var student = Student(id: 0, firstName: "", lastName: "", grade: "", photo: "", isRegister: "") 
     var body: some View {
         
             ZStack(alignment: .center) { 
                 NavigationLink(destination: RequestAccessView(userImage: self.image), isActive: self.$showRequestAccessView) {
                     EmptyView()
                 }
-                NavigationLink(destination: StudentFoundView(userImage: self.image) , isActive: self.$showStudentFoundView) {
+                NavigationLink(destination: StudentFoundView(userImage: self.image, student: self.student) , isActive: self.$showStudentFoundView) {
                     EmptyView()
                 }
                 VStack{
@@ -34,7 +36,18 @@ struct CheckinView: View {
                     }
                     Button { 
                         DispatchQueue.main.async {
-                            self.showRequestAccessView = true
+                            if self.correctionList.randomElement() ?? false{
+                                self.showStudentFoundView = true
+                            } else {
+                                SQLManager.shared.getStudentData(firstName: "Jude") { student in
+                                    if let student = student{
+                                        self.student = student
+                                        self.showRequestAccessView = true
+                                    }
+                                }
+                                
+                                
+                            }
                         }
                         
                     } label: { 

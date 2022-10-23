@@ -55,13 +55,31 @@ class SQLManager {
                 print(db.errorMessage)
             }
         }
+    func insertStudentCheckInData(student: StudentCheckIn){
+        do {
+            try db.insertStudentDetail(student: student)
+        } catch {
+            print(db.errorMessage)
+        }
+    }
     func getUserData(email: String, completionHandler: @escaping (User?) -> Void){
         completionHandler(db.contact(email: email as NSString))
     }
         func getStudentData(firstName: String, completionHandler: @escaping (Student?) -> Void){
             completionHandler(db.getStudentData(firstName: firstName as NSString))
         }
-        
+    func getStudentCheckInData(studentId: Int32, completionHandler: @escaping (StudentCheckIn?) -> Void){
+        completionHandler(db.getStudentCheckInData(studentId: studentId))
+    }
+    func getStudentList(completionHandler: @escaping ([Student]?) -> Void){
+        completionHandler(db.getStudentList())
+    }
+    func getTime() -> String {
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-dd-yyyy HH:mm"
+        return dateFormatter.string(from: date) ?? "" 
+    }
         
         
         
