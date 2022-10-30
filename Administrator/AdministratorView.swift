@@ -6,18 +6,16 @@ struct AdiministratorView: View {
     @State var studentList = [Student]()
     @State var widthSize: CGFloat = 0
     @State var showStudentDetailView = false
-    
+    @State var forRegister = false
     @State var showRegisterStudent = false
     @State var correctionList = [true,false]
     @State var student = Student(id: 0, firstName: "", lastName: "", grade: "", photo: "", isRegister: "")
     var body: some View {
         ZStack { 
-            NavigationLink(destination: RegisterStudent(student: $student), isActive: self.$showRegisterStudent) {
+            NavigationLink(destination: RegisterStudent(student: $student, forRegister: $forRegister), isActive: self.$showRegisterStudent) {
                 EmptyView()
             }
-            NavigationLink(destination: StudentDetailView(student: $student), isActive: self.$showStudentDetailView) {
-                EmptyView()
-            }
+            
             VStack(alignment: .leading, spacing: 20) { 
                 HStack(alignment: .center, spacing: 15) { 
                     Text("Grade")
@@ -113,10 +111,11 @@ struct AdiministratorView: View {
                             .onTapGesture {
                                 self.student = student
                                 if self.correctionList.randomElement() ?? false{
-                                    self.showStudentDetailView = true
+                                    self.forRegister = false
                                 } else {
-                                    self.showRegisterStudent = true
+                                    self.forRegister = true
                                 }
+                                self.showRegisterStudent = true
                             }
                             .background(
                                 RoundedRectangle(cornerRadius: 8)

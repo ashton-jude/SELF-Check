@@ -12,49 +12,67 @@ struct RegisterStudent: View {
     @State var depression: String = ""
     @State var happiness: String = ""
     @State var sickDays: String = ""
+    @Environment(\.presentationMode) var presentation
+    @State var checked: Bool = false
     @Binding var student: Student 
-    
+    @Binding var forRegister: Bool 
     var body: some View {
         VStack{
             
-            Text("Register New Student")
-                .fontWeight(.bold)
-                .font(.system(size: 40))
             
-            HStack (alignment: .center, spacing: 30){
-                Spacer()
+            HStack (alignment: .center){
+                
                 Image(uiImage: UIImage(data: self.userImage) ?? UIImage())
                     .resizable()
-                    .cornerRadius(12)
-                    .frame(width: UIScreen.main.bounds.width / 3, height: UIScreen.main.bounds.height / 1.75)
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: UIScreen.main.bounds.width / 2)
+                    .frame( maxHeight: .infinity)
+                    .clipped()
                 VStack(alignment: .leading, spacing: 20) {
                         
                     ZStack(alignment: .center) { 
                         TextField("First Name", text: $studentFirstName)
-                            .frame(width: 250,height: 40)
+                            .frame(width: 275,height: 40)
+                            .padding(.leading, 10)
+                    }
+                    .background(RoundedRectangle(cornerRadius: 8).fill(Color.gray.opacity(0.1)))
+                    ZStack(alignment: .center) { 
+                        TextField("Last Name", text: $studentLastName)
+                            .frame(width: 275,height: 40)
                             .padding(.leading, 10)
                     }
                     .background(RoundedRectangle(cornerRadius: 8).fill(Color.gray.opacity(0.1)))
                     ZStack(alignment: .center) { 
                         TextField("Grade", text: $studentGrade)
-                            .frame(width: 250,height: 40)
+                            .frame(width: 275,height: 40)
                             .padding(.leading, 10)
                     }
                     .background(RoundedRectangle(cornerRadius: 8).fill(Color.gray.opacity(0.1)))
-                    
+                    if self.forRegister {
+                        Toggle(isOn: $checked, label: {
+                            Text("Register Student")
+                        }).frame(width: 275, height: 40, alignment:.trailing)
+                    } 
                     Button { 
-                        
+                        if self.forRegister{
+                            
+                        } else {
+                            self.presentation.wrappedValue.dismiss()
+                        }
                     } label: { 
-                        Text("Register Student")
-                            .fontWeight(.bold)
-                            .font(.system(size: 25))
+                        Text(self.forRegister ? "Register Student" : "Done")
+                            .padding()
+                            .frame(width: 275, height: 40)
+                            .background(Color(red: 0, green: 0.21, blue: 0.38))
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                        
                     }
                 }
-                Spacer()
+                .frame(width: UIScreen.main.bounds.width / 2)
                 
                 
             }
-            .padding(40)
         }
         .onAppear { 
             self.userImage = Data(base64Encoded: "\(self.student.photo)", options: .ignoreUnknownCharacters) ?? Data()
@@ -62,7 +80,7 @@ struct RegisterStudent: View {
             self.studentLastName = "\(student.lastName)"
             self.studentGrade = "\(student.grade)"
         }
-        .navigationTitle(Text("Register Student").font(.title3).fontWeight(.bold))
+        .navigationTitle(Text(self.forRegister ? "Register Student" : "Student Detail").font(.title3).fontWeight(.bold))
         .navigationBarTitleDisplayMode(.inline)
         
     }
