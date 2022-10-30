@@ -29,6 +29,7 @@ struct LoginView: View {
                     .frame(width: UIScreen.main.bounds.width / 2)
                     Spacer()
                     VStack(alignment: .center, spacing: 20) { 
+                        
                         VStack(alignment: .center, spacing: 150){
                         Image("School_Logo")
                             .resizable()
@@ -36,18 +37,23 @@ struct LoginView: View {
                             .cornerRadius(10)
                             .clipped()
                         }
-                        TextField("Email Address", text: $email)
-                            .frame(width: 250, height: 40)
-                            .background(Color(red: 0.96, green: 0.96, blue: 0.96))
-                            .cornerRadius(10)
-                        SecureField("Password", text: $password)
-                            .frame(width: 250, height: 40)
-                            .background(Color(red: 0.96, green: 0.96, blue: 0.96))
-                            .cornerRadius(10)
+                        .padding(.vertical,100)
                         
+                        ZStack(alignment: .center) { 
+                            TextField("Email Address", text: $email)
+                                .frame(width: 275,height: 40)
+                                .padding(.leading, 10)
+                        }
+                        .background(RoundedRectangle(cornerRadius: 8).fill(Color.gray.opacity(0.1)))
+                        ZStack(alignment: .center) { 
+                            SecureField("Password", text: $password)
+                                .frame(width: 275,height: 40)
+                                .padding(.leading, 10)
+                        }
+                        .background(RoundedRectangle(cornerRadius: 8).fill(Color.gray.opacity(0.1)))
                         Toggle(isOn: $checked, label: {
                             Text("Administrator View")
-                        }).frame(width: 250, height: 40, alignment:.trailing)
+                        }).frame(width: 275, height: 40, alignment:.trailing)
                         
                         Button {
                             SQLManager.shared.getUserData(email: self.email) { user in
@@ -65,7 +71,7 @@ struct LoginView: View {
                         } label: {
                             Text("Login")
                                 .padding()
-                                .frame(width: 250, height: 40)
+                                .frame(width: 275, height: 40)
                                 .background(Color(red: 0, green: 0.21, blue: 0.38))
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
@@ -76,7 +82,7 @@ struct LoginView: View {
                     .frame(width: UIScreen.main.bounds.width / 2)
                 }
             }
-            .background(Color(red: 0.96, green: 0.96, blue: 0.96))
+            //.background(Color(red: 0.96, green: 0.96, blue: 0.96))
             .actionSheet(isPresented: $showDialog){
                 ActionSheet(title: Text("Select Type"), buttons: [
                     .default(Text("Student"), action: { 

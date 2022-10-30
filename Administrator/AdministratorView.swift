@@ -1,22 +1,39 @@
 import SwiftUI
 
 struct AdiministratorView: View {
+    
     @State var gradeText = ""
     @State var studentList = [Student]()
     @State var widthSize: CGFloat = 0
+    @State var showStudentDetailView = false
+    
+    @State var showRegisterStudent = false
+    @State var correctionList = [true,false]
+    @State var student = Student(id: 0, firstName: "", lastName: "", grade: "", photo: "", isRegister: "")
     var body: some View {
         ZStack { 
+            NavigationLink(destination: RegisterStudent(student: $student), isActive: self.$showRegisterStudent) {
+                EmptyView()
+            }
+            NavigationLink(destination: StudentDetailView(student: $student), isActive: self.$showStudentDetailView) {
+                EmptyView()
+            }
             VStack(alignment: .leading, spacing: 20) { 
                 HStack(alignment: .center, spacing: 15) { 
                     Text("Grade")
+                        .font(.title3)
+                        .fontWeight(.bold)
                     HStack(alignment: .center, spacing: 10) { 
-                        TextField("Search Grade", text: $gradeText)
-                            .frame(width: 250)
+                        ZStack(alignment: .center) { 
+                            TextField("Search Grade", text: $gradeText)
+                                .frame(width: 250,height: 40)
+                                .padding(.leading, 10)
+                        }
+                        .background(RoundedRectangle(cornerRadius: 8).fill(Color.gray.opacity(0.1)))
                         Button { 
                             //
                         } label: { 
                             ZStack(alignment: .center) { 
-                                Color.blue
                                 Image(systemName: "magnifyingglass")
                                     .foregroundColor(.white)
                                     .background(Color.gray.opacity(0.2))
@@ -24,14 +41,20 @@ struct AdiministratorView: View {
                                     .frame(width: 20, height: 20)
                                     .padding(10)
                             }
-                            .frame(width: 30, height: 30)
+                            .frame(width: 40, height: 40)
+                            .background(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .fill(Color.blue)
+                                    .shadow(color: Color.black.opacity(0.1), radius: 8, x: 1, y: 1)
+                            )
                         }
                         
                     }
                     .frame(height: 30)
                 }
+                .padding(.horizontal, 30)
                 ZStack (alignment: .center){
-                    Color.gray.opacity(0.2)
+                    
                     HStack (alignment: .center, spacing: 10) { 
                         Text("First Name ")
                             .font(.headline)
@@ -53,17 +76,22 @@ struct AdiministratorView: View {
                         
                     }
                     .padding(.vertical,8)
-                }
+                }    
+                
+                .frame(height: 45)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(Color.gray.opacity(0.2))
+                        .shadow(color: Color.black.opacity(0.25), radius: 14, x: 0, y: 8)
+                )
                 .padding()
-                .frame(height: 30)
-                .cornerRadius(8)
                 
                 ScrollView(.vertical, showsIndicators: false) { 
                     VStack(spacing: 15) { 
                         ForEach(0..<self.studentList.count, id: \.self){ i in 
                             let student = studentList[i]
                             ZStack{
-                                Color.gray.opacity(0.2)
+                                
                                 HStack (alignment: .center, spacing: 10) { 
                                     Text("\(student.firstName)")
                                         .font(.headline)
@@ -82,8 +110,20 @@ struct AdiministratorView: View {
                                 }
                                 .padding(.vertical,8)
                             }
+                            .onTapGesture {
+                                self.student = student
+                                if self.correctionList.randomElement() ?? false{
+                                    self.showStudentDetailView = true
+                                } else {
+                                    self.showRegisterStudent = true
+                                }
+                            }
+                            .background(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .fill(Color.gray.opacity(0.2))
+                                    .shadow(color: Color.black.opacity(0.25), radius: 14, x: 0, y: 8)
+                            )
                             .padding(.horizontal)
-                            .cornerRadius(8)
                         }
                     }
                 }

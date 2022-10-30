@@ -323,12 +323,12 @@ extension StudentCheckIn: SQLTable {
 }
 //Create Student Table
 struct Student {
-    let id: Int32
-    let firstName: NSString
-    let lastName: NSString
-    let grade: NSString
-    let photo: NSString
-    let isRegister: NSString
+var id: Int32
+var firstName: NSString
+var lastName: NSString
+var grade: NSString
+var photo: NSString
+var isRegister: NSString
 }
 
 

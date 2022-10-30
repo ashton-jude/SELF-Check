@@ -12,6 +12,7 @@ struct RegisterStudent: View {
     @State var depression: String = ""
     @State var happiness: String = ""
     @State var sickDays: String = ""
+    @Binding var student: Student 
     
     var body: some View {
         VStack{
@@ -21,46 +22,55 @@ struct RegisterStudent: View {
                 .font(.system(size: 40))
             
             HStack (alignment: .center, spacing: 30){
+                Spacer()
                 Image(uiImage: UIImage(data: self.userImage) ?? UIImage())
                     .resizable()
-                    .frame(width: 250, height: 350)
-                VStack {
-                    HStack{
+                    .cornerRadius(12)
+                    .frame(width: UIScreen.main.bounds.width / 3, height: UIScreen.main.bounds.height / 1.75)
+                VStack(alignment: .leading, spacing: 20) {
                         
+                    ZStack(alignment: .center) { 
                         TextField("First Name", text: $studentFirstName)
-                            .buttonStyle(.bordered)
-                        TextField("Last Name", text: $studentLastName)
-                            .buttonStyle(.bordered)
-                            .padding()
+                            .frame(width: 250,height: 40)
+                            .padding(.leading, 10)
                     }
-                    HStack{
-                        
-                        TextField("Grade", text: $studentGrade) 
-                            .buttonStyle(.bordered)
-                        TextField("Parent Name", text: $parentName)
-                            .buttonStyle(.bordered)
-                            .padding()
+                    .background(RoundedRectangle(cornerRadius: 8).fill(Color.gray.opacity(0.1)))
+                    ZStack(alignment: .center) { 
+                        TextField("Grade", text: $studentGrade)
+                            .frame(width: 250,height: 40)
+                            .padding(.leading, 10)
                     }
-                    HStack {
+                    .background(RoundedRectangle(cornerRadius: 8).fill(Color.gray.opacity(0.1)))
+                    
+                    Button { 
                         
-                        TextField("Parent Email", text: $parentEmail)
-                            .buttonStyle(.bordered)
-                        TextField("Parent Phone Number", text: $parentPhoneNumber)
-                            .buttonStyle(.bordered)
-                            .padding()
+                    } label: { 
+                        Text("Register Student")
+                            .fontWeight(.bold)
+                            .font(.system(size: 25))
                     }
                 }
+                Spacer()
                 
                 
             }
             .padding(40)
         }
+        .onAppear { 
+            self.userImage = Data(base64Encoded: "\(self.student.photo)", options: .ignoreUnknownCharacters) ?? Data()
+            self.studentFirstName = "\(student.firstName)"
+            self.studentLastName = "\(student.lastName)"
+            self.studentGrade = "\(student.grade)"
+        }
+        .navigationTitle(Text("Register Student").font(.title3).fontWeight(.bold))
+        .navigationBarTitleDisplayMode(.inline)
         
     }
 }
-
+/*
 struct RegisterStudent_Previews: PreviewProvider {
     static var previews: some View {
         RegisterStudent()
     }
 }
+ */

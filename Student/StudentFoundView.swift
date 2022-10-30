@@ -4,31 +4,40 @@ struct StudentFoundView: View {
     @State var emotionList = ["Happy","Sad","Depressed"]
     @State var userImage: Data = Data(count: 0)
     @State var student = Student(id: 0, firstName: "", lastName: "", grade: "", photo: "", isRegister: "") 
-    
+    @State var firstName = ""
+    @State var lastName = ""
+    @State var grade = ""
     var body: some View {
         VStack {
-            VStack(alignment: .center, spacing: 250) { 
-                Text("Check In")
-                    .fontWeight(.bold)
-                    .font(.system(size: 40))
-            }
-            
-            
-            HStack (alignment: .center, spacing: 100){
+            HStack (alignment: .center){
                 Image(uiImage: UIImage(data: self.userImage) ?? UIImage())
                     .resizable()
-                    .frame(width: 450, height: 400)
-                VStack (alignment: .leading, spacing: 30){
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: UIScreen.main.bounds.width / 2)
+                    .frame( maxHeight: .infinity)
+                    .clipped()
+                VStack (alignment: .leading, spacing: 20){
+                    ZStack(alignment: .center) { 
+                        TextField("First Name", text: $firstName)
+                            .frame(width: 275,height: 40)
+                            .padding(.leading, 10)
+                    }
+                    .background(RoundedRectangle(cornerRadius: 8).fill(Color.gray.opacity(0.1)))
                     
-                    Text("First Name: \(self.student.firstName)")
-                        .foregroundColor(.black)
-                        .padding()
+                    ZStack(alignment: .center) { 
+                        TextField("Last Name", text: $lastName)
+                            .frame(width: 275,height: 40)
+                            .padding(.leading, 10)
+                    }
+                    .background(RoundedRectangle(cornerRadius: 8).fill(Color.gray.opacity(0.1)))
                     
-                    Text("Last Name: \(self.student.lastName)")
-                        .padding()
+                    ZStack(alignment: .center) { 
+                        TextField("Grade", text: $grade)
+                            .frame(width: 275,height: 40)
+                            .padding(.leading, 10)
+                    }
+                    .background(RoundedRectangle(cornerRadius: 8).fill(Color.gray.opacity(0.1)))
                     
-                    Text("Grade: \(self.student.grade)") 
-                        .padding()
                     
                     
                     Button { 
@@ -44,15 +53,20 @@ struct StudentFoundView: View {
                         }
                     } label: { 
                         Text("Check In")
-                            .fontWeight(.bold)
-                            .font(.system(size: 25))
+                            .padding()
+                            .frame(width: 275, height: 40)
+                            .background(Color(red: 0, green: 0.21, blue: 0.38))
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
                     }
                     
                     
                 }
-                
+                .frame(width: UIScreen.main.bounds.width / 2)
+                .frame( maxHeight: .infinity)                
             }
-        }
+        }.navigationTitle(Text("Check In").font(.title3).fontWeight(.bold))
+            .navigationBarTitleDisplayMode(.inline)
     }
     
     

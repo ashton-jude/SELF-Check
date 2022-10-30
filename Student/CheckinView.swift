@@ -10,6 +10,7 @@ struct CheckinView: View {
     @State var showStudentFoundView = false
     @State var correctionList = [true,false]
     @State var student = Student(id: 0, firstName: "", lastName: "", grade: "", photo: "", isRegister: "") 
+    @Environment(\.presentationMode) var presentation
     var body: some View {
         
             ZStack(alignment: .center) { 
@@ -20,20 +21,31 @@ struct CheckinView: View {
                     EmptyView()
                 }
                 VStack{
-                    Image(uiImage: UIImage(data: self.image) ?? UIImage())
-                        .resizable()
-                        .frame(width: 450,height: 400)
-                        .cornerRadius(10)
-                        .clipped()
-                    Button { 
-                        self.showCameraView.toggle()
-                    } label: { 
-                        Text("Take Photo")
-                            .frame(width: 450, height: 40)
-                            .background(Color.white)
-                            .cornerRadius(8)
-                            .foregroundColor(Color.black)
+                    Text("Take your picture")
+                        .font(.title)
+                        .fontWeight(.bold)
+                    ZStack{
+                        
+                    
+                    if self.image.count > 0{
+                        Image(uiImage: UIImage(data: self.image) ?? UIImage())
+                            .resizable()
+                            .frame(width: 300,height: 380)
+                            .cornerRadius(10)
+                            .clipped()
+                    } else {
+                        Image("Placeholder")
+                            .resizable()
+                            .frame(width: 300, height: 380)
+                            .cornerRadius(10)
+                            .clipped()
                     }
+                    }
+                    .padding(.bottom)
+                    .onTapGesture {
+                        self.showCameraView.toggle()
+                    }
+                    
                     Button { 
                         DispatchQueue.main.async {
                             if self.correctionList.randomElement() ?? false{
@@ -45,32 +57,64 @@ struct CheckinView: View {
                                         self.showRequestAccessView = true
                                     }
                                 }
-                                
-                                
                             }
                         }
                         
                     } label: { 
                         Text("Submit Photo")
-                            .frame(width: 450, height: 40)
-                            .background(Color.white)
-                            .cornerRadius(8)
-                            .foregroundColor(Color.black)
+                            .padding()
+                            .frame(width: 300, height: 40)
+                            .background(Color(red: 0, green: 0.21, blue: 0.38))
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
                     }
-                    
-                    
-                        
-                    
                 }
                 .padding(.vertical)
-                
+            }.opacity(0)
+            .navigationBarHidden(true)
+            .navigationBarTitle(Text(" "))
+            .onAppear(){
+                    showCameraView.toggle()
             }
-            
-            .background(Image("Orange").ignoresSafeArea())
-            .sheet(isPresented:$showCameraView, content: { 
-                CustomCameraView(image: $image, showCameraView: $showCameraView)
-            })
-            
+            .fullScreenCover(isPresented: $showCameraView) {
+                CustomCameraView(image: $image, showCameraView: $showCameraView) { 
+                    self.presentation.wrappedValue.dismiss()
+                } doneAction: { 
+                    DispatchQueue.main.async {
+                        if self.correctionList.randomElement() ?? false{
+                            self.showStudentFoundView = true
+                        } else {
+                            SQLManager.shared.getStudentData(firstName: "Jude") { student in
+                                if let student = student{
+                                    self.student = student
+                                    self.showRequestAccessView = true
+                                }
+                            }
+                        }
+                    }
+                    
+                }
+            }
+        /*.sheet(isPresented:$showCameraView, content: { 
+                CustomCameraView(image: $image, showCameraView: $showCameraView) { 
+                    self.presentation.wrappedValue.dismiss()
+                } doneAction: { 
+                    DispatchQueue.main.async {
+                        if self.correctionList.randomElement() ?? false{
+                            self.showStudentFoundView = true
+                        } else {
+                            SQLManager.shared.getStudentData(firstName: "Jude") { student in
+                                if let student = student{
+                                    self.student = student
+                                    self.showRequestAccessView = true
+                                }
+                            }
+                        }
+                    }
+                    
+                }
+         
+            })*/
     }
 }
 

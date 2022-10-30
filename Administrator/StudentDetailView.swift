@@ -1,8 +1,8 @@
-/*
+
 import SwiftUI
-import RegisterStudent
 
 struct StudentDetailView: View {
+    @Binding var student: Student
     var body: some View {
     
         VStack{
@@ -21,27 +21,17 @@ struct StudentDetailView: View {
                 VStack {
                     HStack{
                         
-                        Text( text: $studentFirstName)
+                        Text("random")
                             .buttonStyle(.bordered)
-                        Text( text: $studentLastName)
+                        Text( "random")
                             .buttonStyle(.bordered)
                             .padding()
                     }
                     HStack{
                         
-                        Text( text: $studentGrade) 
+                        Text( "random") 
                             .buttonStyle(.bordered)
-                        Text( text: $parentName)
-                            .buttonStyle(.bordered)
-                            .padding()
-                    }
-                    HStack {
                         
-                        Text( text: $parentEmail)
-                            .buttonStyle(.bordered)
-                        Text( text: $parentPhoneNumber)
-                            .buttonStyle(.bordered)
-                            .padding()
                     }
                 }
                 
@@ -52,10 +42,11 @@ struct StudentDetailView: View {
         
     }
 }
-
+/*
 struct StudentDetail_Preview: PreviewProvider {
     static var previews: some View {
         RegisterStudent()
     }
 }
+ 
  */

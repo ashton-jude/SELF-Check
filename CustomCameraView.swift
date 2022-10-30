@@ -5,6 +5,8 @@ import UIKit
 struct CustomCameraView: UIViewControllerRepresentable {
     @Binding var image: Data
     @Binding var showCameraView: Bool
+    var backAction: () -> Void 
+    var doneAction: () -> Void
     func makeCoordinator() -> CustomCameraView.Coordinator {
         Coordinator(cameraView: self)
     }
@@ -28,13 +30,29 @@ struct CustomCameraView: UIViewControllerRepresentable {
         }
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
-            self.parent.image = image.pngData() ?? Data(count: 0)
+            let orientationImage = image.fixOrientation() ?? UIImage()
+            self.parent.image = orientationImage.pngData() ?? Data(count: 0)
             self.parent.showCameraView = false
+            self.parent.doneAction()
         }
         func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
             self.parent.showCameraView = false
+            self.parent.backAction()
+            
         }
     }
 }
 
-
+extension UIImage {
+    func fixOrientation() -> UIImage? {
+        if self.imageOrientation == UIImage.Orientation.up {
+            return self
+        }
+        
+        UIGraphicsBeginImageContext(self.size)
+        self.draw(in: CGRect(origin: .zero, size: self.size))
+        let normalizedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return normalizedImage
+    }
+}

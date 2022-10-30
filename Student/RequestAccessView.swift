@@ -9,27 +9,36 @@ struct RequestAccessView: View {
     var body: some View {
         VStack {
             
-            Text("Request Access from Administrator")
-                .fontWeight(.bold)
-                .font(.system(size: 40))
-            
-            HStack (alignment: .center, spacing: 100){
+            HStack (alignment: .center){
                 Image(uiImage: UIImage(data: self.userImage) ?? UIImage())
                     .resizable()
-                    .frame(width: 450, height: 400)
-                VStack (alignment: .trailing, spacing: 30){
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: UIScreen.main.bounds.width / 2)
+                    .frame( maxHeight: .infinity)
+                    .clipped()
+                VStack (alignment: .leading, spacing: 20){
+                    ZStack(alignment: .center) { 
+                        TextField("First Name", text: $studentFirstName)
+                            .frame(width: 275,height: 40)
+                            .padding(.leading, 10)
+                    }
+                    .background(RoundedRectangle(cornerRadius: 8).fill(Color.gray.opacity(0.1)))
                     
-                    TextField("First Name", text: $studentFirstName)
-                        .buttonStyle(.bordered)
-                        .padding()
+                    ZStack(alignment: .center) { 
+                        TextField("Last Name", text: $studentLastName)
+                            .frame(width: 275,height: 40)
+                            .padding(.leading, 10)
+                    }
+                    .background(RoundedRectangle(cornerRadius: 8).fill(Color.gray.opacity(0.1)))
+                    
+                    ZStack(alignment: .center) { 
+                        TextField("Grade", text: $studentGrade)
+                            .frame(width: 275,height: 40)
+                            .padding(.leading, 10)
+                    }
+                    .background(RoundedRectangle(cornerRadius: 8).fill(Color.gray.opacity(0.1)))
                     
                     
-                    TextField("Last Name", text: $studentLastName)
-                        .buttonStyle(.bordered)
-                        .padding()
-                    TextField("Grade", text: $studentGrade) 
-                        .buttonStyle(.bordered)
-                        .padding()
                     
                     Button { 
                         SQLManager.shared.createStudentTable(table: Student.self)
@@ -45,16 +54,24 @@ struct RequestAccessView: View {
                         }
                     } label: { 
                         Text("Request Access")
-                            .fontWeight(.bold)
-                            .font(.system(size: 25))
+                            .padding()
+                            .frame(width: 275, height: 40)
+                            .background(Color(red: 0, green: 0.21, blue: 0.38))
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
                     }
                     
                     
                 }
+                .frame(width: UIScreen.main.bounds.width / 2)
+                .frame( maxHeight: .infinity)                
+            
                 
             }
         }
-        .padding(40)
+        
+    .navigationTitle(Text("Request Access").font(.title3).fontWeight(.bold))
+        .navigationBarTitleDisplayMode(.inline)
         
     }
 }
