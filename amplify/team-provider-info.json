@@ -1,0 +1,26 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-selfcheck-staging-23021-authRole",
+      "UnauthRoleArn": "arn:aws:iam::814601136180:role/amplify-selfcheck-staging-23021-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::814601136180:role/amplify-selfcheck-staging-23021-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-selfcheck-staging-23021-deployment",
+      "UnauthRoleName": "amplify-selfcheck-staging-23021-unauthRole",
+      "StackName": "amplify-selfcheck-staging-23021",
+      "StackId": "arn:aws:cloudformation:us-east-1:814601136180:stack/amplify-selfcheck-staging-23021/2410f8e0-54d6-11ed-ad4c-125ca13870af",
+      "AmplifyAppId": "d2ayctcq4eyly5"
+    },
+    "categories": {
+      "auth": {
+        "selfcheck": {}
+      },
+      "function": {
+        "processPhoto": {
+          "deploymentBucketName": "amplify-selfcheck-staging-23021-deployment",
+          "s3Key": "amplify-builds/processPhoto-3075354352544f496341-build.zip"
+        }
+      }
+    }
+  }
+}

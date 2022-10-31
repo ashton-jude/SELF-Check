@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "paths": {
+    "/selfcheck": {
+      "name": "/selfcheck",
+      "lambdaFunction": "processPhoto",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/selfcheck/processphoto": {
+      "name": "/selfcheck/processphoto",
+      "lambdaFunction": "processPhoto",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/selfcheck/processPhoto": {
+      "name": "/selfcheck/processPhoto",
+      "lambdaFunction": "processPhoto",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

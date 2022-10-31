@@ -1,5 +1,4 @@
 import SwiftUI
-import CoreData
 
 struct LoginView: View {
     @State var showCheckInView = false

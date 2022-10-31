@@ -1,0 +1,113 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-selfcheck-staging-23021-authRole",
+      "UnauthRoleArn": "arn:aws:iam::814601136180:role/amplify-selfcheck-staging-23021-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::814601136180:role/amplify-selfcheck-staging-23021-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-selfcheck-staging-23021-deployment",
+      "UnauthRoleName": "amplify-selfcheck-staging-23021-unauthRole",
+      "StackName": "amplify-selfcheck-staging-23021",
+      "StackId": "arn:aws:cloudformation:us-east-1:814601136180:stack/amplify-selfcheck-staging-23021/2410f8e0-54d6-11ed-ad4c-125ca13870af",
+      "AmplifyAppId": "d2ayctcq4eyly5"
+    }
+  },
+  "auth": {
+    "selfcheck": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "socialProviders": [],
+        "usernameAttributes": [],
+        "signupAttributes": [],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": [
+            "REQUIRES_LOWERCASE",
+            "REQUIRES_NUMBERS",
+            "REQUIRES_SYMBOLS",
+            "REQUIRES_UPPERCASE"
+          ]
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "output": {
+        "UserPoolId": "us-east-1_K5U7OPXFl",
+        "AppClientIDWeb": "6jcm25qlfi8bdeg8ebt5e30c18",
+        "AppClientID": "7nhms947ka0ofv2l3bqlupdk7q",
+        "IdentityPoolId": "us-east-1:bd787eb3-959a-4415-8833-005f37f509fb",
+        "UserPoolArn": "arn:aws:cognito-idp:us-east-1:814601136180:userpool/us-east-1_K5U7OPXFl",
+        "IdentityPoolName": "testAuthIdentityPool__staging",
+        "UserPoolName": "selfcheck"
+      },
+      "lastPushTimeStamp": "2022-10-30T11:36:40.318Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-selfcheck-staging-23021-deployment/amplify-cfn-templates/auth/selfcheck-cloudformation-template.json",
+        "logicalId": "authselfcheck"
+      },
+      "lastPushDirHash": "d5yjEPtBKwSatzj7qvBq8ZQjnTM="
+    }
+  },
+  "function": {
+    "processPhoto": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:814601136180:function:processPhoto-staging",
+        "Name": "processPhoto-staging",
+        "LambdaExecutionRole": "selfcheckLambdaRole1a05bf55-staging"
+      },
+      "lastPushTimeStamp": "2022-10-30T11:36:40.321Z",
+      "lastBuildTimeStamp": "2022-10-28T20:22:33.539Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2022-10-28T20:22:33.602Z",
+      "distZipFilename": "processPhoto-3075354352544f496341-build.zip",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-selfcheck-staging-23021-deployment",
+        "s3Key": "amplify-builds/processPhoto-3075354352544f496341-build.zip"
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-selfcheck-staging-23021-deployment/amplify-cfn-templates/function/processPhoto-cloudformation-template.json",
+        "logicalId": "functionprocessPhoto"
+      },
+      "lastPushDirHash": "1m70//OcDNvwbaSPH/KOw01/3GM="
+    }
+  },
+  "api": {
+    "selfcheck": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "processPhoto",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ],
+      "output": {
+        "ApiName": "selfcheck",
+        "RootUrl": "https://q21yibs861.execute-api.us-east-1.amazonaws.com/staging",
+        "ApiId": "q21yibs861"
+      },
+      "lastPushTimeStamp": "2022-10-30T11:36:40.426Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-selfcheck-staging-23021-deployment/amplify-cfn-templates/api/selfcheck-cloudformation-template.json",
+        "logicalId": "apiselfcheck"
+      },
+      "lastPushDirHash": "fQuONbo4pHovUl8piIZD4cJqh4E="
+    }
+  }
+}
